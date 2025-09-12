@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .countdown-container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        .countdown-title {
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+        
+        .countdown-display {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .time-unit {
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            min-width: 80px;
+        }
+        
+        .time-number {
+            font-size: 3em;
+            font-weight: bold;
+            display: block;
+        }
+        
+        .time-label {
+            font-size: 1.2em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+        
+        .target-date {
+            margin-top: 20px;
+            font-size: 1.3em;
+            opacity: 0.9;
+        }
+        
+        @media (max-width: 600px) {
+            .countdown-display {
+                gap: 15px;
+            }
+            .time-unit {
+                min-width: 60px;
+                padding: 15px;
+            }
+            .time-number {
+                font-size: 2em;
+            }
+            .countdown-title {
+                font-size: 2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="countdown-container">
+        <div class="countdown-title">Countdown to November 1, 2026</div>
+        <div class="countdown-display">
+            <div class="time-unit">
+                <span class="time-number" id="days">000</span>
+                <span class="time-label">Days</span>
+            </div>
+            <div class="time-unit">
+                <span class="time-number" id="hours">00</span>
+                <span class="time-label">Hours</span>
+            </div>
+            <div class="time-unit">
+                <span class="time-number" id="minutes">00</span>
+                <span class="time-label">Minutes</span>
+            </div>
+            <div class="time-unit">
+                <span class="time-number" id="seconds">00</span>
+                <span class="time-label">Seconds</span>
+            </div>
+        </div>
+        <div class="target-date">Target Date: November 1, 2026</div>
+    </div>
+
+    <script>
+        function updateCountdown() {
+            // Target date: November 1, 2026 at midnight
+            const targetDate = new Date('2026-11-01T00:00:00').getTime();
+            const now = new Date().getTime();
+            const difference = targetDate - now;
+
+            if (difference > 0) {
+                // Calculate time units
+                const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+                // Update display
+                document.getElementById('days').textContent = days.toString().padStart(3, '0');
+                document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
+                document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+                document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+            } else {
+                // Target date has passed
+                document.getElementById('days').textContent = '000';
+                document.getElementById('hours').textContent = '00';
+                document.getElementById('minutes').textContent = '00';
+                document.getElementById('seconds').textContent = '00';
+                document.querySelector('.countdown-title').textContent = 'The Date Has Arrived!';
+            }
+        }
+
+        // Update countdown every second
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+    </script>
+</body>
+</html>
