@@ -107,102 +107,103 @@
         <div class="announcement-title">Countdown to Announcement</div>
         <div class="countdown-display">
             <div class="time-unit">
-                <span class="time-number" id="ann-days">000</span>
+                <span class="time-number" id="announcement-days">000</span>
                 <span class="time-label">Days</span>
             </div>
             <div class="time-unit">
-                <span class="time-number" id="ann-hours">00</span>
+                <span class="time-number" id="announcement-hours">00</span>
                 <span class="time-label">Hours</span>
             </div>
             <div class="time-unit">
-                <span class="time-number" id="ann-minutes">00</span>
+                <span class="time-number" id="announcement-minutes">00</span>
                 <span class="time-label">Minutes</span>
             </div>
             <div class="time-unit">
-                <span class="time-number" id="ann-seconds">00</span>
+                <span class="time-number" id="announcement-seconds">00</span>
                 <span class="time-label">Seconds</span>
             </div>
         </div>
-        <div class="target-date">Target Date: September 29, 2025</div>
+        <div class="target-date">Target Date: September 29, 2025 (Adelaide Time)</div>
     </div>
 
     <div class="countdown-container">
         <div class="countdown-title">Countdown to November 1, 2026</div>
         <div class="countdown-display">
             <div class="time-unit">
-                <span class="time-number" id="days">000</span>
+                <span class="time-number" id="main-days">000</span>
                 <span class="time-label">Days</span>
             </div>
             <div class="time-unit">
-                <span class="time-number" id="hours">00</span>
+                <span class="time-number" id="main-hours">00</span>
                 <span class="time-label">Hours</span>
             </div>
             <div class="time-unit">
-                <span class="time-number" id="minutes">00</span>
+                <span class="time-number" id="main-minutes">00</span>
                 <span class="time-label">Minutes</span>
             </div>
             <div class="time-unit">
-                <span class="time-number" id="seconds">00</span>
+                <span class="time-number" id="main-seconds">00</span>
                 <span class="time-label">Seconds</span>
             </div>
         </div>
-        <div class="target-date">Target Date: November 1, 2026</div>
+        <div class="target-date">Target Date: November 1, 2026 (Adelaide Time)</div>
     </div>
 
     <script>
-        function updateCountdowns() {
-            // Announcement target: September 29, 2025 at midnight
-            const announcementDate = new Date('2025-09-29T00:00:00').getTime();
-            // Main target: November 1, 2026 at midnight
-            const mainTargetDate = new Date('2026-11-01T00:00:00').getTime();
-            const now = new Date().getTime();
+        function runCountdowns() {
+            // Get current time
+            const currentTime = new Date();
+            
+            // Target dates in Adelaide timezone (UTC+9:30)
+            const announcementDate = new Date('2025-09-29T00:00:00+09:30');
+            const mainDate = new Date('2026-11-01T00:00:00+09:30');
+            
+            // Calculate time remaining
+            const announcementRemaining = announcementDate.getTime() - currentTime.getTime();
+            const mainRemaining = mainDate.getTime() - currentTime.getTime();
 
             // Update announcement countdown
-            const annDifference = announcementDate - now;
-            if (annDifference > 0) {
-                const annDays = Math.floor(annDifference / (1000 * 60 * 60 * 24));
-                const annHours = Math.floor((annDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const annMinutes = Math.floor((annDifference % (1000 * 60 * 60)) / (1000 * 60));
-                const annSeconds = Math.floor((annDifference % (1000 * 60)) / 1000);
+            if (announcementRemaining > 0) {
+                const aDays = Math.floor(announcementRemaining / (1000 * 60 * 60 * 24));
+                const aHours = Math.floor((announcementRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const aMinutes = Math.floor((announcementRemaining % (1000 * 60 * 60)) / (1000 * 60));
+                const aSeconds = Math.floor((announcementRemaining % (1000 * 60)) / 1000);
 
-                document.getElementById('ann-days').textContent = annDays.toString().padStart(3, '0');
-                document.getElementById('ann-hours').textContent = annHours.toString().padStart(2, '0');
-                document.getElementById('ann-minutes').textContent = annMinutes.toString().padStart(2, '0');
-                document.getElementById('ann-seconds').textContent = annSeconds.toString().padStart(2, '0');
+                document.getElementById('announcement-days').textContent = aDays.toString().padStart(3, '0');
+                document.getElementById('announcement-hours').textContent = aHours.toString().padStart(2, '0');
+                document.getElementById('announcement-minutes').textContent = aMinutes.toString().padStart(2, '0');
+                document.getElementById('announcement-seconds').textContent = aSeconds.toString().padStart(2, '0');
             } else {
-                document.getElementById('ann-days').textContent = '000';
-                document.getElementById('ann-hours').textContent = '00';
-                document.getElementById('ann-minutes').textContent = '00';
-                document.getElementById('ann-seconds').textContent = '00';
-                const annTitle = document.querySelector('.announcement-title');
-                if (annTitle) annTitle.textContent = 'Announcement Date Reached!';
+                document.getElementById('announcement-days').textContent = '000';
+                document.getElementById('announcement-hours').textContent = '00';
+                document.getElementById('announcement-minutes').textContent = '00';
+                document.getElementById('announcement-seconds').textContent = '00';
+                document.querySelector('.announcement-title').textContent = 'Announcement Date Reached!';
             }
 
             // Update main countdown
-            const mainDifference = mainTargetDate - now;
-            if (mainDifference > 0) {
-                const mainDays = Math.floor(mainDifference / (1000 * 60 * 60 * 24));
-                const mainHours = Math.floor((mainDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const mainMinutes = Math.floor((mainDifference % (1000 * 60 * 60)) / (1000 * 60));
-                const mainSeconds = Math.floor((mainDifference % (1000 * 60)) / 1000);
+            if (mainRemaining > 0) {
+                const mDays = Math.floor(mainRemaining / (1000 * 60 * 60 * 24));
+                const mHours = Math.floor((mainRemaining % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const mMinutes = Math.floor((mainRemaining % (1000 * 60 * 60)) / (1000 * 60));
+                const mSeconds = Math.floor((mainRemaining % (1000 * 60)) / 1000);
 
-                document.getElementById('days').textContent = mainDays.toString().padStart(3, '0');
-                document.getElementById('hours').textContent = mainHours.toString().padStart(2, '0');
-                document.getElementById('minutes').textContent = mainMinutes.toString().padStart(2, '0');
-                document.getElementById('seconds').textContent = mainSeconds.toString().padStart(2, '0');
+                document.getElementById('main-days').textContent = mDays.toString().padStart(3, '0');
+                document.getElementById('main-hours').textContent = mHours.toString().padStart(2, '0');
+                document.getElementById('main-minutes').textContent = mMinutes.toString().padStart(2, '0');
+                document.getElementById('main-seconds').textContent = mSeconds.toString().padStart(2, '0');
             } else {
-                document.getElementById('days').textContent = '000';
-                document.getElementById('hours').textContent = '00';
-                document.getElementById('minutes').textContent = '00';
-                document.getElementById('seconds').textContent = '00';
-                const mainTitle = document.querySelector('.countdown-title');
-                if (mainTitle) mainTitle.textContent = 'The Date Has Arrived!';
+                document.getElementById('main-days').textContent = '000';
+                document.getElementById('main-hours').textContent = '00';
+                document.getElementById('main-minutes').textContent = '00';
+                document.getElementById('main-seconds').textContent = '00';
+                document.querySelector('.countdown-title').textContent = 'The Date Has Arrived!';
             }
         }
 
-        // Start the countdown immediately
-        updateCountdowns();
-        setInterval(updateCountdowns, 1000);
+        // Start the countdowns
+        runCountdowns();
+        setInterval(runCountdowns, 1000);
     </script>
 </body>
 </html>
