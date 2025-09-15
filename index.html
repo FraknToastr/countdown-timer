@@ -9,10 +9,29 @@
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             margin: 0;
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
+        }
+        
+        .announcement-container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 25px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            width: 100%;
+            max-width: 800px;
+        }
+        
+        .announcement-title {
+            font-size: 2em;
+            margin-bottom: 25px;
+            font-weight: bold;
+            color: #FFD700;
         }
         
         .countdown-container {
@@ -21,6 +40,8 @@
             padding: 30px;
             backdrop-filter: blur(10px);
             box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 800px;
         }
         
         .countdown-title {
@@ -75,10 +96,36 @@
             .countdown-title {
                 font-size: 2em;
             }
+            .announcement-title {
+                font-size: 1.5em;
+            }
         }
     </style>
 </head>
 <body>
+    <div class="announcement-container">
+        <div class="announcement-title">Countdown to Announcement</div>
+        <div class="countdown-display">
+            <div class="time-unit">
+                <span class="time-number" id="ann-days">000</span>
+                <span class="time-label">Days</span>
+            </div>
+            <div class="time-unit">
+                <span class="time-number" id="ann-hours">00</span>
+                <span class="time-label">Hours</span>
+            </div>
+            <div class="time-unit">
+                <span class="time-number" id="ann-minutes">00</span>
+                <span class="time-label">Minutes</span>
+            </div>
+            <div class="time-unit">
+                <span class="time-number" id="ann-seconds">00</span>
+                <span class="time-label">Seconds</span>
+            </div>
+        </div>
+        <div class="target-date">Target Date: September 29, 2025</div>
+    </div>
+
     <div class="countdown-container">
         <div class="countdown-title">Countdown to November 1, 2026</div>
         <div class="countdown-display">
@@ -103,37 +150,59 @@
     </div>
 
     <script>
-        function updateCountdown() {
-            // Target date: November 1, 2026 at midnight
-            const targetDate = new Date('2026-11-01T00:00:00').getTime();
+        function updateCountdowns() {
+            // Announcement target: September 29, 2025 at midnight
+            const announcementDate = new Date('2025-09-29T00:00:00').getTime();
+            // Main target: November 1, 2026 at midnight
+            const mainTargetDate = new Date('2026-11-01T00:00:00').getTime();
             const now = new Date().getTime();
-            const difference = targetDate - now;
 
-            if (difference > 0) {
-                // Calculate time units
-                const days = Math.floor(difference / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+            // Update announcement countdown
+            const annDifference = announcementDate - now;
+            if (annDifference > 0) {
+                const annDays = Math.floor(annDifference / (1000 * 60 * 60 * 24));
+                const annHours = Math.floor((annDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const annMinutes = Math.floor((annDifference % (1000 * 60 * 60)) / (1000 * 60));
+                const annSeconds = Math.floor((annDifference % (1000 * 60)) / 1000);
 
-                // Update display
-                document.getElementById('days').textContent = days.toString().padStart(3, '0');
-                document.getElementById('hours').textContent = hours.toString().padStart(2, '0');
-                document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
-                document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+                document.getElementById('ann-days').textContent = annDays.toString().padStart(3, '0');
+                document.getElementById('ann-hours').textContent = annHours.toString().padStart(2, '0');
+                document.getElementById('ann-minutes').textContent = annMinutes.toString().padStart(2, '0');
+                document.getElementById('ann-seconds').textContent = annSeconds.toString().padStart(2, '0');
             } else {
-                // Target date has passed
+                document.getElementById('ann-days').textContent = '000';
+                document.getElementById('ann-hours').textContent = '00';
+                document.getElementById('ann-minutes').textContent = '00';
+                document.getElementById('ann-seconds').textContent = '00';
+                const annTitle = document.querySelector('.announcement-title');
+                if (annTitle) annTitle.textContent = 'Announcement Date Reached!';
+            }
+
+            // Update main countdown
+            const mainDifference = mainTargetDate - now;
+            if (mainDifference > 0) {
+                const mainDays = Math.floor(mainDifference / (1000 * 60 * 60 * 24));
+                const mainHours = Math.floor((mainDifference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const mainMinutes = Math.floor((mainDifference % (1000 * 60 * 60)) / (1000 * 60));
+                const mainSeconds = Math.floor((mainDifference % (1000 * 60)) / 1000);
+
+                document.getElementById('days').textContent = mainDays.toString().padStart(3, '0');
+                document.getElementById('hours').textContent = mainHours.toString().padStart(2, '0');
+                document.getElementById('minutes').textContent = mainMinutes.toString().padStart(2, '0');
+                document.getElementById('seconds').textContent = mainSeconds.toString().padStart(2, '0');
+            } else {
                 document.getElementById('days').textContent = '000';
                 document.getElementById('hours').textContent = '00';
                 document.getElementById('minutes').textContent = '00';
                 document.getElementById('seconds').textContent = '00';
-                document.querySelector('.countdown-title').textContent = 'The Date Has Arrived!';
+                const mainTitle = document.querySelector('.countdown-title');
+                if (mainTitle) mainTitle.textContent = 'The Date Has Arrived!';
             }
         }
 
-        // Update countdown every second
-        updateCountdown();
-        setInterval(updateCountdown, 1000);
+        // Start the countdown immediately
+        updateCountdowns();
+        setInterval(updateCountdowns, 1000);
     </script>
 </body>
 </html>
